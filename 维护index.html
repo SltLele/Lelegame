@@ -118,7 +118,7 @@
             color: rgba(255,255,255,0.75);
             font-weight: 300;
             max-width: 500px;
-            margin: 0 auto 30px;
+            margin: 0 auto 20px;
         }
         .message .highlight {
             color: #7c5cfc;
@@ -154,6 +154,29 @@
             50% { opacity: 0.3; transform: scale(0.8); }
         }
 
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 20px auto 10px;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.55);
+            max-width: 400px;
+        }
+        .info-grid .row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding-bottom: 6px;
+        }
+        .info-grid .label {
+            font-weight: 300;
+        }
+        .info-grid .value {
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+        }
+
         .footer {
             margin-top: 30px;
             color: rgba(255,255,255,0.15);
@@ -161,13 +184,13 @@
             letter-spacing: 2px;
         }
 
-        /* 响应式 */
         @media (max-width: 600px) {
             .maintenance-card { padding: 30px 20px; }
             .title { font-size: 2rem; }
             .sub { font-size: 1rem; }
             .message { font-size: 0.95rem; }
             .icon { font-size: 3rem; }
+            .info-grid { font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -184,21 +207,74 @@
 
         <p class="message">
             为了给你带来更好的游戏体验，我们正在对 <span class="highlight">Lele游戏库</span> 进行维护和内容更新。<br>
-            预计 <span class="highlight2">30 分钟</span> 后恢复访问。<br>
             感谢你的耐心等待，很快回来 🎮
         </p>
 
-        <!-- 可选：显示当前时间或倒计时 -->
-        <p style="font-size:0.85rem; color:rgba(255,255,255,0.25); margin-top:10px;">
-            维护开始：<span id="startTime"></span>
-        </p>
+        <!-- ===== 维护信息：自动计算并显示 ===== -->
+        <div class="info-grid" id="maintenanceInfo">
+            <div class="row"><span class="label">维护开始</span><span class="value" id="startDisplay">--</span></div>
+            <div class="row"><span class="label">预计结束</span><span class="value" id="endDisplay">--</span></div>
+            <div class="row"><span class="label">预计时长</span><span class="value" id="durationDisplay">--</span></div>
+        </div>
+        <!-- ===== 维护信息结束 ===== -->
     </div>
     <div class="footer">Lele游戏库 · 用代码编织快乐</div>
 </div>
 
 <script>
-    // 显示当前时间作为维护开始时间
-    document.getElementById('startTime').textContent = new Date().toLocaleString('zh-CN', { hour12: false });
+    // ============================================================
+    //  【维护配置变量】—— 你只需要修改前两个！
+    // ============================================================
+
+    // 1. 维护开始时间（格式：'YYYY-MM-DD HH:MM:SS'）
+    //    留空（''）则自动使用当前时间。
+    var MAINTENANCE_START = '2026-07-20 10:00:00';
+
+    // 2. 预计维护时长（分钟）
+    var MAINTENANCE_DURATION_MINUTES = 30;
+
+    // 3. 结束时间将自动计算，无需手动设置。
+    // ============================================================
+
+    // ---- 以下代码自动处理显示 ----
+    (function() {
+        var startStr = MAINTENANCE_START.trim();
+        var startDate = startStr ? new Date(startStr) : new Date();
+
+        // 如果开始时间无效，回退到当前时间
+        if (isNaN(startDate.getTime())) {
+            startDate = new Date();
+        }
+
+        // 计算结束时间
+        var endDate = new Date(startDate.getTime() + MAINTENANCE_DURATION_MINUTES * 60000);
+
+        // 格式化时间
+        function formatDate(d) {
+            var pad = function(n) { return n < 10 ? '0' + n : n; };
+            return d.getFullYear() + '-' +
+                   pad(d.getMonth() + 1) + '-' +
+                   pad(d.getDate()) + ' ' +
+                   pad(d.getHours()) + ':' +
+                   pad(d.getMinutes()) + ':' +
+                   pad(d.getSeconds());
+        }
+
+        // 格式化时长（分钟 → 小时+分钟）
+        function formatDuration(minutes) {
+            if (minutes < 60) return '约 ' + minutes + ' 分钟';
+            var h = Math.floor(minutes / 60);
+            var m = minutes % 60;
+            if (m === 0) return '约 ' + h + ' 小时';
+            return '约 ' + h + ' 小时 ' + m + ' 分钟';
+        }
+
+        // 显示
+        document.getElementById('startDisplay').textContent = formatDate(startDate);
+        document.getElementById('endDisplay').textContent = formatDate(endDate);
+        document.getElementById('durationDisplay').textContent = formatDuration(MAINTENANCE_DURATION_MINUTES);
+    })();
 </script>
+
 </body>
 </html>
