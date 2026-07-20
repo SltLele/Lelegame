@@ -9,6 +9,7 @@ var gamesData = [
     { name: "数字拼图[滑动拼图]", file: "数字拼图[滑动拼图].html" },
     { name: "乒乓球", file: "乒乓球.html" },
     { name: "打靶", file: "打靶.html" },
+    { name: "Mincraft JAVA版", file: "https://yile.dpdns.org" },
     { name: "Minecraft-Web 1.5.2", file: "Eaglercraft_IR_1.5.2.html", icon: "photo/m1.png" },
     { name: "Minecraft-Web 1.8.8", file: "Eaglercraft_IR_1.8.8.html", icon: "photo/m1.png" },
     { name: "Minecraft-Web 1.8.8高性能", file: "Eaglercraft_IR_1.8.8wasm.html", icon: "photo/m1.webp" },
