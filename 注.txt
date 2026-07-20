@@ -1,0 +1,3 @@
+announcement是公告。
+games是打开网页后的选项
+time是维护时间。

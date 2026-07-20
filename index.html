@@ -105,7 +105,6 @@
             flex-wrap: wrap;
         }
 
-        /* 按钮通用样式 */
         .top-btn, .lang-select {
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.12);
@@ -151,17 +150,14 @@
             box-shadow: 0 8px 30px rgba(124,92,252,0.15);
         }
 
-        /* ===== 语言选择框：使用原生下拉箭头，无自定义背景 ===== */
         .lang-select {
-            /* 移除 appearance: none，恢复原生下拉箭头 */
             appearance: auto;
             -webkit-appearance: auto;
-            /* 移除背景图相关设置 */
             background-image: none;
-            padding-right: 16px; /* 正常内边距 */
+            padding-right: 16px;
         }
 
-        /* ===== 其余样式保持不变 ===== */
+        /* ===== 其余原有样式（从你代码中完整保留） ===== */
         .header { text-align:center; padding:30px 20px 20px; margin-bottom:10px; }
         .header h1 {
             font-size:4rem; font-weight:800;
@@ -658,6 +654,21 @@
             </select>
             <button class="top-btn" id="themeToggle" onclick="toggleTheme()" data-i18n="themeBtn">🌗 切换深色</button>
             <button class="top-btn" id="compatToggle" onclick="toggleCompat()" data-i18n="compatBtn">🔄 低版本适配模式</button>
+            <!-- ===== 新增公告按钮 ===== -->
+            <button class="top-btn" id="announceBtn" onclick="showAnnouncement()" style="position:relative;">
+                📢 公告
+                <span id="announce-badge" style="
+                    display:none;
+                    position:absolute;
+                    top:-4px;
+                    right:-4px;
+                    width:10px;
+                    height:10px;
+                    background:#fc5c7c;
+                    border-radius:50%;
+                    border:2px solid #0f0f1a;
+                "></span>
+            </button>
         </div>
     </div>
 
@@ -698,6 +709,8 @@
 
 <!-- 加载游戏列表配置 -->
 <script src="games.js"></script>
+<!-- ===== 公告系统 ===== -->
+<script src="announcements.js"></script>
 
 <script>
     (function() {
@@ -939,4 +952,3 @@
 
 </body>
 </html>
-<!-- 重新触发部署 -->
