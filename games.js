@@ -1,6 +1,6 @@
 // 游戏列表配置
 var gamesData = [
-    { name: "欢迎来到游戏库，点击返回主页", file: "homepage.html", icon: "photo/home.webp },
+    { name: "点我返回主页", file: "homepage.html", icon: "photo/home.webp" },
     { name: "贪吃蛇", file: "贪吃蛇.html" },
     { name: "俄罗斯方块", file: "俄罗斯方块.html" },
     { name: "打砖块", file: "打砖块.html" },
