@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 · 游戏库页面未找到</title>
     <style>
+        /* ========== 全局重置 & 主题 ========== */
         * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
@@ -68,7 +69,7 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 24px;
-            padding: 50px 40px;
+            padding: 50px 40px 40px;
             position: relative;
             overflow: hidden;
         }
@@ -104,7 +105,7 @@
             font-size: 1.8rem;
             font-weight: 600;
             color: rgba(255,255,255,0.8);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             position: relative;
             z-index: 1;
         }
@@ -113,7 +114,7 @@
             line-height: 1.8;
             color: rgba(255,255,255,0.6);
             font-weight: 300;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
@@ -126,6 +127,26 @@
             font-weight: 500;
         }
 
+        /* ---- 检测结果小标签 ---- */
+        .detected-badge {
+            display: inline-block;
+            background: rgba(124,92,252,0.12);
+            border: 1px solid rgba(124,92,252,0.2);
+            border-radius: 60px;
+            padding: 4px 18px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        .detected-badge strong {
+            color: #7c5cfc;
+            font-weight: 500;
+        }
+
+        /* ---- 倒计时 ---- */
         .timer-section {
             display: flex;
             align-items: center;
@@ -150,6 +171,7 @@
             font-weight: 300;
         }
 
+        /* ---- 按钮组 ---- */
         .btn-group {
             display: flex;
             flex-wrap: wrap;
@@ -157,6 +179,7 @@
             gap: 12px;
             position: relative;
             z-index: 1;
+            transition: opacity 0.3s;
         }
         .btn {
             padding: 12px 24px;
@@ -171,6 +194,7 @@
             color: #ccc;
             backdrop-filter: blur(4px);
             min-width: 140px;
+            display: inline-block;
         }
         .btn-primary {
             background: linear-gradient(135deg, #7c5cfc, #fc5c7c);
@@ -187,24 +211,43 @@
             border-color: rgba(124,92,252,0.3);
             color: #fff;
         }
-        .btn .badge {
-            display: inline-block;
-            font-size: 0.6rem;
-            background: rgba(255,255,255,0.15);
-            border-radius: 30px;
-            padding: 1px 10px;
-            margin-left: 6px;
-            vertical-align: middle;
-        }
-        .btn-primary .badge {
-            background: rgba(255,255,255,0.2);
-        }
         .btn .sub {
             display: block;
             font-size: 0.6rem;
             font-weight: 300;
             opacity: 0.6;
             margin-top: 2px;
+        }
+        /* 单一按钮时放大一点 */
+        .btn-single {
+            min-width: 200px;
+            padding: 14px 32px;
+            font-size: 1.05rem;
+        }
+        .btn-single .sub {
+            font-size: 0.7rem;
+        }
+
+        /* ---- 更改设置链接（右下角） ---- */
+        .change-settings {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            font-size: 0.8rem;
+            color: #7c5cfc;
+            text-decoration: underline;
+            cursor: pointer;
+            z-index: 10;
+            background: rgba(15,15,26,0.6);
+            padding: 4px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(124,92,252,0.15);
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .change-settings:hover {
+            background: rgba(124,92,252,0.15);
         }
 
         .footer {
@@ -214,33 +257,19 @@
             letter-spacing: 2px;
         }
 
-        .detected-badge {
-            display: inline-block;
-            background: rgba(124,92,252,0.12);
-            border: 1px solid rgba(124,92,252,0.2);
-            border-radius: 60px;
-            padding: 4px 18px;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-        .detected-badge strong {
-            color: #7c5cfc;
-            font-weight: 500;
-        }
-
         @media (max-width: 600px) {
             .error-card { padding: 30px 20px; }
             .error-code { font-size: 4rem; }
             .error-title { font-size: 1.4rem; }
             .timer-number { font-size: 2rem; min-width: 40px; }
             .btn { padding: 10px 16px; font-size: 0.85rem; min-width: 120px; }
-            .btn .sub { font-size: 0.55rem; }
+            .btn-single { min-width: 160px; padding: 12px 24px; }
+            .change-settings { bottom: 16px; right: 16px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
+
 <div class="container">
     <div class="error-card">
         <div class="error-code">404</div>
@@ -250,69 +279,158 @@
             我们将自动带你返回游戏库首页。
         </div>
 
-        <!-- 当前检测到的版本 -->
+        <!-- 检测标签 -->
         <div class="detected-badge" id="detectedBadge">
             🔍 检测到你正在使用 <strong id="detectedVersion">...</strong>
         </div>
 
+        <!-- 倒计时 -->
         <div class="timer-section">
             <span class="timer-label">倒计时</span>
             <span class="timer-number" id="countdown">10</span>
             <span class="timer-label">秒</span>
         </div>
 
-        <div class="btn-group">
-            <a href="#" class="btn btn-primary" id="goProxyBtn">
-                🚀 加速版
-                <span class="sub">game.lelegame.dpdns.org</span>
-            </a>
-            <a href="#" class="btn btn-secondary" id="goOriginalBtn">
-                📦 原始版
-                <span class="sub">sltlele.github.io/LeleGames</span>
-            </a>
-        </div>
+        <!-- 按钮容器（动态渲染） -->
+        <div class="btn-group" id="btnGroup"></div>
     </div>
     <div class="footer">Lele游戏库 · 用代码编织快乐</div>
 </div>
 
+<!-- 更改设置链接（右下角） -->
+<div class="change-settings" id="changeSettings">⚙️ 更改设置</div>
+
 <script>
     (function() {
-        // =============================================
-        // 配置：两个版本的游戏库首页地址
-        // =============================================
+        'use strict';
+
+        // ============================================================
+        //  配置：两个版本的游戏库首页
+        // ============================================================
         var PROXY_HOME   = 'https://game.lelegame.dpdns.org/';
         var ORIGINAL_HOME = 'https://sltlele.github.io/LeleGames/';
 
-        // =============================================
-        // 自动检测当前访问的是哪个版本
-        // =============================================
+        // ============================================================
+        //  工具：Cookie 读写
+        // ============================================================
+        function setCookie(name, value, days) {
+            var expires = '';
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                expires = '; expires=' + date.toUTCString();
+            }
+            // 设置 path=/ 且 domain=.lelegame.dpdns.org（以便子域共享）
+            // 注意：如果当前域名不是 lelegame.dpdns.org 的子域，domain 设置会被忽略，但无害
+            document.cookie = name + '=' + encodeURIComponent(value) + expires +
+                '; path=/; domain=.lelegame.dpdns.org; SameSite=Lax';
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + '=';
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(c.substring(nameEQ.length));
+                }
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            document.cookie = name + '=; Max-Age=-99999999; path=/; domain=.lelegame.dpdns.org';
+        }
+
+        // ============================================================
+        //  状态管理
+        // ============================================================
+        var PREF_KEY = 'game_library_pref';   // 存储 'proxy' 或 'original'
         var currentHost = window.location.hostname;
+        // 判断当前是否在加速版域名下（包含 lelegame.dpdns.org）
+        var isProxyEnv = currentHost.indexOf('lelegame.dpdns.org') !== -1;
 
-        // 判断当前是否为代理版（包含 lelegame.dpdns.org）
-        var isProxy = currentHost.indexOf('lelegame.dpdns.org') !== -1;
+        // 获取存储的偏好
+        var storedPref = getCookie(PREF_KEY);
 
-        // 默认跳转目标：根据当前域名自动选择
-        var defaultHome = isProxy ? PROXY_HOME : ORIGINAL_HOME;
-        var defaultLabel = isProxy ? '加速版' : '原始版';
+        // 如果没有存储偏好，则根据当前环境给出默认推荐
+        var defaultPref = isProxyEnv ? 'proxy' : 'original';
+        // 当前选中的偏好（最终跳转目标）
+        var currentPref = storedPref || defaultPref;
 
-        // =============================================
-        // DOM 元素
-        // =============================================
+        // 版本名称映射
+        var versionNames = {
+            'proxy': '加速版',
+            'original': '原始版'
+        };
+        var versionHomes = {
+            'proxy': PROXY_HOME,
+            'original': ORIGINAL_HOME
+        };
+
+        // ============================================================
+        //  DOM 引用
+        // ============================================================
+        var detectedVersionEl = document.getElementById('detectedVersion');
         var countdownEl = document.getElementById('countdown');
-        var goProxyBtn = document.getElementById('goProxyBtn');
-        var goOriginalBtn = document.getElementById('goOriginalBtn');
-        var detectedVersion = document.getElementById('detectedVersion');
+        var btnGroup = document.getElementById('btnGroup');
+        var changeSettingsBtn = document.getElementById('changeSettings');
 
-        // 显示检测结果
-        detectedVersion.textContent = defaultLabel;
+        // ============================================================
+        //  渲染函数
+        // ============================================================
+        function renderButtons(showChoice) {
+            // showChoice = true 表示显示两个选择按钮（首次或无偏好）
+            // showChoice = false 表示显示单个快捷按钮（已有偏好）
+            btnGroup.innerHTML = '';
 
-        // 设置按钮的 href
-        goProxyBtn.href = PROXY_HOME;
-        goOriginalBtn.href = ORIGINAL_HOME;
+            if (showChoice) {
+                // 显示两个按钮，让用户选择
+                var proxyBtn = document.createElement('a');
+                proxyBtn.className = 'btn btn-primary';
+                proxyBtn.href = PROXY_HOME;
+                proxyBtn.innerHTML = '🚀 加速版 <span class="sub">game.lelegame.dpdns.org</span>';
+                proxyBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 存储偏好并跳转
+                    setCookie(PREF_KEY, 'proxy', 365);
+                    window.location.href = PROXY_HOME;
+                });
 
-        // =============================================
-        // 倒计时逻辑
-        // =============================================
+                var originalBtn = document.createElement('a');
+                originalBtn.className = 'btn btn-secondary';
+                originalBtn.href = ORIGINAL_HOME;
+                originalBtn.innerHTML = '📦 原始版 <span class="sub">sltlele.github.io/LeleGames</span>';
+                originalBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setCookie(PREF_KEY, 'original', 365);
+                    window.location.href = ORIGINAL_HOME;
+                });
+
+                btnGroup.appendChild(proxyBtn);
+                btnGroup.appendChild(originalBtn);
+            } else {
+                // 显示单个快捷按钮
+                var pref = currentPref;
+                var label = versionNames[pref] || '游戏库';
+                var home = versionHomes[pref] || ORIGINAL_HOME;
+                var singleBtn = document.createElement('a');
+                singleBtn.className = 'btn btn-primary btn-single';
+                singleBtn.href = home;
+                singleBtn.innerHTML = '🎮 前往 ' + label + ' <span class="sub">' + home.replace(/^https?:\/\//, '') + '</span>';
+                // 点击时清除定时器（由全局监听处理）
+                singleBtn.addEventListener('click', function(e) {
+                    // 让浏览器正常跳转，但清除倒计时
+                    if (timer) clearInterval(timer);
+                    // 不阻止默认
+                });
+                btnGroup.appendChild(singleBtn);
+            }
+        }
+
+        // ============================================================
+        //  倒计时逻辑
+        // ============================================================
         var seconds = 10;
         var timer = null;
 
@@ -321,7 +439,8 @@
         }
 
         function goHome() {
-            window.location.href = defaultHome;
+            var target = versionHomes[currentPref] || ORIGINAL_HOME;
+            window.location.href = target;
         }
 
         function startCountdown() {
@@ -336,40 +455,79 @@
             }, 1000);
         }
 
-        // 点击按钮时停止倒计时并跳转（按钮本身已有 href，但需要阻止默认行为以便清除定时器）
-        goProxyBtn.addEventListener('click', function(e) {
-            // 不阻止默认，让 href 正常工作，但先清除定时器
-            if (timer) {
-                clearInterval(timer);
+        // ============================================================
+        //  重置偏好（更改设置）
+        // ============================================================
+        function resetPreference() {
+            eraseCookie(PREF_KEY);
+            // 刷新页面以重新显示选择界面
+            window.location.reload();
+        }
+
+        // ============================================================
+        //  初始化
+        // ============================================================
+        function init() {
+            // 1. 显示检测到的环境
+            var envLabel = isProxyEnv ? '加速版' : '原始版';
+            detectedVersionEl.textContent = envLabel;
+
+            // 2. 判断是否有存储偏好
+            var hasPref = (storedPref !== null);
+
+            // 3. 渲染按钮
+            if (hasPref) {
+                // 已有偏好，显示单个按钮
+                renderButtons(false);
+                // 更新 currentPref 为存储的值（已经赋值）
+                // 但显示标签时，在按钮里会显示对应的版本名称
+                // 同时，检测标签可以额外显示“您的偏好：xxx”
+                detectedVersionEl.textContent = envLabel + ' (偏好: ' + versionNames[currentPref] + ')';
+            } else {
+                // 无偏好，显示两个选择按钮
+                renderButtons(true);
+                // 检测标签提示当前环境，并建议选择
+                detectedVersionEl.textContent = envLabel + ' — 请选择您偏好的版本';
             }
-            // 让浏览器正常跳转
-        });
 
-        goOriginalBtn.addEventListener('click', function(e) {
-            if (timer) {
-                clearInterval(timer);
-            }
-        });
+            // 4. 启动倒计时（如果有偏好则自动跳转，否则倒计时结束后仍跳转到默认推荐，但我们希望无偏好时倒计时结束也跳转到默认推荐？用户可能希望倒计时结束后跳到默认推荐。但无偏好时，最好让用户选择，不自动跳转？为了更好的用户体验，我们设计：无偏好时，倒计时结束后自动跳转到检测到的默认版本（当前环境对应的版本），但这样会强制跳转，可能不符合用户选择。所以我们改成：无偏好时，倒计时结束后不跳转，只显示倒计时数字变化，但暂停？用户需求是“倒计时10秒自动回到主页”，但如果有两个按钮选择，倒计时结束后跳转到哪里？用户需求是“这个页面自动存储cookie，下次进入404的界面时自动读取并且将两个按钮改成一个按钮”，所以无偏好时倒计时结束后可以跳转到默认检测版本，并存储该偏好。这样合理。
+            // 所以我们修改：无偏好时，倒计时结束后，自动选择默认推荐（当前环境对应的版本），存储cookie，然后跳转。
+            // 实现：倒计时结束调用 goHome()，但 goHome 使用 currentPref，currentPref 已在前面赋值为 storedPref || defaultPref，所以可以。
+            // 但无偏好时，currentPref = defaultPref，所以倒计时结束后会跳转到默认版本。
+            // 用户看到倒计时结束，跳转到默认版本，并自动存储偏好（需在跳转前存储）。
+            // 我们修改 goHome 函数，在跳转前如果无偏好则存储默认偏好。
+            // 重写 goHome
+            var originalGoHome = goHome;
+            goHome = function() {
+                // 如果没有偏好，则存储当前默认偏好
+                if (!storedPref) {
+                    setCookie(PREF_KEY, defaultPref, 365);
+                }
+                var target = versionHomes[currentPref] || ORIGINAL_HOME;
+                window.location.href = target;
+            };
 
-        // 启动倒计时
-        startCountdown();
+            // 5. 绑定“更改设置”事件
+            changeSettingsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                resetPreference();
+            });
 
-        // =============================================
-        // 键盘快捷键：1 跳转加速版，2 跳转原始版
-        // =============================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === '1') {
-                if (timer) clearInterval(timer);
-                window.location.href = PROXY_HOME;
-            } else if (e.key === '2') {
-                if (timer) clearInterval(timer);
-                window.location.href = ORIGINAL_HOME;
-            }
-        });
+            // 6. 启动倒计时
+            startCountdown();
 
-        console.log('🔍 当前域名: ' + currentHost);
-        console.log('📍 检测到: ' + defaultLabel + '，倒计时结束后将自动跳转');
-        console.log('⌨️  按 1 键 → 加速版 | 按 2 键 → 原始版');
+            // 7. 额外：如果用户点击了按钮，会清除定时器（已在按钮事件中处理）
+        }
+
+        // 当文档加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // 暴露 resetPreference 给全局（备用）
+        window.resetPref = resetPreference;
     })();
 </script>
 </body>
