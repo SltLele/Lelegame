@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>维护中 · Lele游戏库</title>
+
+    <!-- ===== 引入外部配置 ===== -->
+    <script src="time.js"></script>
+
+    <style>
+        /* ===== 完全复用原样式 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            transition: background 0.5s, color 0.5s;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 70%, #0f0f1a 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -1;
+            background: radial-gradient(ellipse at 30% 40%, rgba(124, 92, 252, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(252, 92, 124, 0.06) 0%, transparent 50%);
+            animation: glowMove 20s infinite alternate;
+        }
+        @keyframes glowMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(5%, 5%) scale(1.2);
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 16px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .maintenance-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 50px 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .maintenance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(124, 92, 252, 0.05), transparent 60%);
+            animation: introGlow 8s infinite alternate;
+        }
+        @keyframes introGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(5%, 5%) scale(1.2);
+            }
+        }
+
+        .icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+        .title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c5cfc, #fc5c7c, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        .sub {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 4px;
+            font-weight: 300;
+            margin-bottom: 28px;
+        }
+        .message {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+        .message .highlight {
+            color: #7c5cfc;
+            font-weight: 500;
+        }
+        .message .highlight2 {
+            color: #fc5c7c;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(252, 92, 124, 0.15);
+            border: 1px solid rgba(252, 92, 124, 0.25);
+            border-radius: 60px;
+            padding: 8px 24px;
+            font-size: 0.9rem;
+            color: #fc5c7c;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .status-badge .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fc5c7c;
+            margin-right: 10px;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 20px auto 10px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 400px;
+        }
+        .info-grid .row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 6px;
+        }
+        .info-grid .label {
+            font-weight: 300;
+        }
+        .info-grid .value {
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .info-grid .error-value {
+            color: #fc5c7c;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .maintenance-card {
+                padding: 30px 20px;
+            }
+            .title {
+                font-size: 2rem;
+            }
+            .sub {
+                font-size: 1rem;
+            }
+            .message {
+                font-size: 0.95rem;
+            }
+            .icon {
+                font-size: 3rem;
+            }
+            .info-grid {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="maintenance-card">
+            <span class="icon">🔧</span>
+            <div class="title">Lele游戏库</div>
+            <div class="sub">✦ 维护中 · 稍后回来 ✦</div>
+
+            <div class="status-badge">
+                <span class="dot"></span> 正在升级优化
+            </div>
+
+            <p class="message">
+                为了给你带来更好的游戏体验，我们正在对 <span class="highlight">Lele游戏库</span> 进行维护和内容更新。<br />
+                感谢你的耐心等待，很快回来 🎮
+            </p>
+
+            <!-- ===== 维护信息显示区 ===== -->
+            <div class="info-grid" id="maintenanceInfo">
+                <div class="row"><span class="label">维护开始</span><span class="value" id="startDisplay">--</span></div>
+                <div class="row"><span class="label">预计结束</span><span class="value" id="endDisplay">--</span></div>
+                <div class="row"><span class="label">预计时长</span><span class="value" id="durationDisplay">--</span></div>
+            </div>
+            <!-- ===== 维护信息结束 ===== -->
+        </div>
+        <div class="footer">Lele游戏库 · 用代码编织快乐 · v2.0</div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  读取外部配置（time.js）并显示，若配置无效则报错
+        // ============================================================
+        (function() {
+            // ----- 获取显示元素 -----
+            var startEl = document.getElementById('startDisplay');
+            var endEl = document.getElementById('endDisplay');
+            var durationEl = document.getElementById('durationDisplay');
+
+            // ----- 工具函数 -----
+            function pad(n) {
+                return n < 10 ? '0' + n : n;
+            }
+
+            function formatDate(d) {
+                return d.getFullYear() + '-' +
+                    pad(d.getMonth() + 1) + '-' +
+                    pad(d.getDate()) + ' ' +
+                    pad(d.getHours()) + ':' +
+                    pad(d.getMinutes()) + ':' +
+                    pad(d.getSeconds());
+            }
+
+            function formatDuration(minutes) {
+                if (minutes < 0) return '无效时长';
+                if (minutes < 60) return '约 ' + minutes + ' 分钟';
+                var h = Math.floor(minutes / 60);
+                var m = minutes % 60;
+                if (m === 0) return '约 ' + h + ' 小时';
+                return '约 ' + h + ' 小时 ' + m + ' 分钟';
+            }
+
+            // ----- 检查配置变量是否存在且有效 -----
+            var startStr = (typeof MAINTENANCE_START !== 'undefined') ? String(MAINTENANCE_START).trim() : '';
+            var endStr = (typeof MAINTENANCE_END !== 'undefined') ? String(MAINTENANCE_END).trim() : '';
+
+            // 如果任一为空，或日期解析无效，则报错
+            var isValid = true;
+            var startDate = null;
+            var endDate = null;
+            var errorMsg = '';
+
+            if (startStr === '' || endStr === '') {
+                isValid = false;
+                errorMsg = 'ERROR 01-未出示时间（开始或结束时间为空）';
+            } else {
+                startDate = new Date(startStr);
+                endDate = new Date(endStr);
+                if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                    isValid = false;
+                    errorMsg = 'ERROR 01-未出示时间（日期格式错误）';
+                } else if (startDate.getTime() >= endDate.getTime()) {
+                    // 可选：开始时间不能晚于结束时间，但也可以容忍，不过这里视为无效
+                    isValid = false;
+                    errorMsg = 'ERROR 01-未出示时间（开始时间不能晚于结束时间）';
+                }
+            }
+
+            // ----- 根据 isValid 更新界面 -----
+            if (!isValid) {
+                // 显示错误信息
+                startEl.textContent = errorMsg;
+                startEl.className = 'value error-value';
+                endEl.textContent = '--';
+                endEl.className = 'value';
+                durationEl.textContent = '--';
+                durationEl.className = 'value';
+                return;
+            }
+
+            // ----- 有效数据：计算时长并显示 -----
+            var durationMinutes = Math.round((endDate.getTime() - startDate.getTime()) / 60000);
+
+            startEl.textContent = formatDate(startDate);
+            startEl.className = 'value';
+            endEl.textContent = formatDate(endDate);
+            endEl.className = 'value';
+            durationEl.textContent = formatDuration(durationMinutes);
+            durationEl.className = 'value';
+        })();
+    </script>
+
+    <!-- ============================================================
+    【版本标识】v2.0 - 使用外置 time.js，开始/结束时间双变量配置
+    ============================================================ -->
+</body>
+</html>
