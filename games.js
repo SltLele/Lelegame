@@ -10,6 +10,7 @@ var gamesData = [
     { name: "数字拼图[滑动拼图]", file: "数字拼图[滑动拼图].html" },
     { name: "乒乓球", file: "乒乓球.html" },
     { name: "打靶", file: "打靶.html" },
+    { name: "MC系列图标介绍", file: "图标介绍.html", icon: "photo/m4.png" },
     { name: "MCJS-1.8.8", file: "mcjs1.8.8.html", icon: "photo/m3.png" },
     { name: "MCJS-1.8.8高性能", file: "mcjs1.8.8wasm.html", icon: "photo/m3.png" },
     { name: "MCJS-1.12.2", file: "mcjs1.12.2.html", icon: "photo/m1.png" },

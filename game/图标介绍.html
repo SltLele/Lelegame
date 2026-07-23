@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏图标说明</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e 40%, #16213e 70%, #0f0f1a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: -1;
+            background: radial-gradient(ellipse at 30% 40%, rgba(124,92,252,0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 60%, rgba(252,92,124,0.06) 0%, transparent 50%);
+            animation: glowMove 20s infinite alternate;
+        }
+        @keyframes glowMove {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(5%,5%) scale(1.2); }
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== 文章卡片 ===== */
+        .article {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 44px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .article::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(124,92,252,0.05), transparent 60%);
+            animation: introGlow 8s infinite alternate;
+        }
+        @keyframes introGlow {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(5%,5%) scale(1.2); }
+        }
+        .article > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .article h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c5cfc, #fc5c7c, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .article .sub {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 4px;
+            margin-bottom: 28px;
+            font-weight: 300;
+        }
+
+        .article p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.78);
+            font-weight: 300;
+            margin-bottom: 1.2em;
+        }
+        .article .highlight {
+            color: #7c5cfc;
+            font-weight: 500;
+        }
+        .article .highlight2 {
+            color: #fc5c7c;
+            font-weight: 500;
+        }
+        .article .highlight3 {
+            color: #5cfc7c;
+            font-weight: 500;
+        }
+
+        /* ===== 图标展示 ===== */
+        .icon-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            margin: 28px 0 24px;
+        }
+        .icon-card {
+            flex: 0 1 170px;
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 16px 12px 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s ease;
+        }
+        .icon-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(124,92,252,0.25);
+        }
+        .icon-card img {
+            width: 100%;
+            max-width: 120px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: block;
+            margin: 0 auto 10px;
+            background: #1a1a2e;
+        }
+        .icon-card .fname {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+        }
+        .icon-card .fdesc {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 2px;
+        }
+        .icon-card .tag {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .tag.pc { background: rgba(124,92,252,0.2); color: #7c5cfc; }
+        .tag.mobile { background: rgba(252,165,92,0.15); color: #fca55c; }
+        .tag.all { background: rgba(92,252,124,0.15); color: #5cfc7c; }
+
+        /* ===== 底部二次修改说明 ===== */
+        .mod-note {
+            text-align: center;
+            padding: 14px 20px;
+            margin-top: 16px;
+            background: rgba(252,92,124,0.05);
+            border: 1px solid rgba(252,92,124,0.08);
+            border-radius: 12px;
+        }
+        .mod-note p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.55);
+            font-weight: 300;
+            margin-bottom: 0;
+        }
+        .mod-note .hl {
+            color: #fc5c7c;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 12px; }
+            .article { padding: 24px 18px; border-radius: 18px; }
+            .article h1 { font-size: 1.8rem; }
+            .article p { font-size: 0.95rem; }
+            .icon-grid { gap: 16px; }
+            .icon-card { flex: 0 1 130px; padding: 12px 8px; }
+            .icon-card img { max-width: 100px; }
+        }
+        @media (max-width: 400px) {
+            .icon-card { flex: 0 1 100px; }
+            .icon-card img { max-width: 80px; }
+            .icon-card .fname { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <article class="article">
+
+        <!-- ============================================================
+         ✏️  以下为文章正文，所有文字均可直接在源码中修改
+             （玩家无法编辑，只有开发者你能改）
+        ============================================================ -->
+
+        <h1>📋 游戏图标说明</h1>
+        <div class="sub">—— 设备兼容标识 ——</div>
+
+        <!-- 介绍段落：你可以任意修改这里的文字 -->
+        <p>
+            本游戏库收录的游戏均配有对应的设备标识图标，方便你快速了解每款游戏的最佳游玩平台。
+        </p>
+        <p>
+            下图展示了三种图标的含义：
+        </p>
+
+        <!-- 三个图标 -->
+        <div class="icon-grid">
+            <div class="icon-card">
+                <img src="/photo/m1.png" alt="电脑端" loading="lazy">
+                <div class="fname">m1.png</div>
+                <div class="fdesc">电脑端专用</div>
+                <span class="tag pc">仅限桌面</span>
+            </div>
+            <div class="icon-card">
+                <img src="/photo/m2.png" alt="手机端" loading="lazy">
+                <div class="fname">m2.png</div>
+                <div class="fdesc">手机端专用</div>
+                <span class="tag mobile">仅限移动</span>
+            </div>
+            <div class="icon-card">
+                <img src="/photo/m3.png" alt="通用版" loading="lazy">
+                <div class="fname">m3.png</div>
+                <div class="fdesc">通用版</div>
+                <span class="tag all">全平台</span>
+            </div>
+        </div>
+
+        <!-- 补充说明：可修改 -->
+        <p>
+            <span class="highlight">m1.png</span> 表示该游戏针对 <strong>电脑端</strong>（键盘 + 鼠标）进行了专门优化；
+            <span class="highlight2">m2.png</span> 表示该游戏针对 <strong>手机端</strong>（触屏操控）进行了专门优化；
+            <span class="highlight3">m3.png</span> 则表示该游戏在 <strong>所有设备</strong> 上都能获得良好的体验。
+        </p>
+
+        <!-- 二次修改声明 -->
+        <div class="mod-note">
+            <p>⚡ 以上所有游戏均经过 <span class="hl">二次修改与适配</span>，以在不同设备上提供更流畅的游玩体验。</p>
+        </div>
+
+        <!-- 可选的结尾，可删除或修改 -->
+        <p style="margin-top:24px; color:rgba(255,255,255,0.25); font-size:0.9rem; text-align:right;">
+            —— 用代码编织快乐 ——
+        </p>
+
+        <!-- ============================================================
+             ✏️  文章到此结束，以上所有文字均可自由修改
+        ============================================================ -->
+
+    </article>
+</div>
+</body>
+</html>
